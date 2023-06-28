@@ -1,42 +1,11 @@
 import { memo, useMemo } from "react";
 import { Box, Skeleton } from "@chakra-ui/react";
-// import type { Cell, Row, Table } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
-// import type { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 const CellSkeleton = () => (
   <Skeleton rounded="md" height="20px" minW="20px" width="100%" />
 );
-
-// interface GeneralTableRowsProps<T> {
-//   rows: Row<T>[];
-//   tableContainerRef: HTMLDivElement;
-//   table: Table<T>;
-// }
-
-// interface GeneralTableRowDisplayProps<T> {
-//   row: Row<T>;
-//   virtualRow: VirtualItem;
-//   measureElement: Virtualizer<HTMLDivElement, Element>["measureElement"];
-//   start: number;
-//   isSkeletonRow: boolean;
-// }
-
-// interface GeneralTableRowWrapperProps<T> {
-//   rows: Row<T>[];
-//   virtualRow: VirtualItem;
-//   measureElement: Virtualizer<HTMLDivElement, Element>["measureElement"];
-//   start: number;
-//   isSkeletonRow: boolean;
-// }
-
-// interface GeneralTableCellDisplayProps<T> {
-//   cell: Cell<T, unknown>;
-//   isSkeletonRow: boolean;
-// }
-
-// const typedMemo: <T>(c: T) => T = memo;
 
 function GeneralTableCellDisplay({ cell, isSkeletonRow }) {
   return (
@@ -44,11 +13,8 @@ function GeneralTableCellDisplay({ cell, isSkeletonRow }) {
       fontSize="sm"
       fontWeight="500"
       p={2}
-      //   whiteSpace="nowrap"
       position="relative"
       width={`${cell.column.getSize()}px`}
-      //   borderRight="1px solid"
-      //   borderRightColor="gray.200"
       marginLeft="-1px"
       marginBottom="-1px"
     >
@@ -86,7 +52,6 @@ function GeneralTableRowDisplay({
       display="flex"
       borderBottom="1px solid"
       borderBottomColor="var(--ck-colors-chakra-border-color)"
-      //   bg={row.getIsSelected() ? "blue.50" : "white"}
     >
       {row.getVisibleCells().map((cell) => (
         <MemoGeneralTableCellDisplay

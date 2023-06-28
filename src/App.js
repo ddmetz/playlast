@@ -1,76 +1,54 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import {
-  ChakraProvider,
-  extendTheme,
-  Grid,
-  GridItem,
+  Box,
   Button,
-  ButtonGroup,
+  Card,
+  CardBody,
+  Center,
   Container,
+  Flex,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
-  Link,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-  Stack,
+  Grid,
+  GridItem,
   Heading,
-  Divider,
-  Text,
-  HStack,
-  Box,
-  Flex,
-  Spacer,
-  SimpleGrid,
-  Center,
+  Image,
+  Input,
   Menu,
-  MenuList,
   MenuButton,
   MenuItem,
-  MenuGroup,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  useToast,
+  MenuList,
+  Spacer,
+  Stack,
+  Text,
   useColorMode,
+  useToast
 } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 import {
-  ChevronDownIcon,
-  TimeIcon,
-  SearchIcon,
   MoonIcon,
   SunIcon,
+  TimeIcon
 } from "@chakra-ui/icons";
 
-import "./index.css";
 import { GeneralTable } from "./components/table/general-table";
+import "./index.css";
 
-import theme from "./theme";
 
 const placeholderAlbumArt = require("./static/placeholder-album-art.png");
 
 function App() {
-  const CLIENT_ID = "9ce7fc97485342b4ac6e3ae3666653bb";
-  const REDIRECT_URI = "http://localhost:3000";
-  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-  const RESPONSE_TYPE = "token";
-  const SCOPES = ["playlist-read-private"].join("%20"); // join with space delimiter
 
   const LASTFM_API_KEY = "bf66e9302e019074df8bbcbdecc64104";
+
+  const SPOTIFY_CLIENT_ID = "9ce7fc97485342b4ac6e3ae3666653bb";
+
+  const SPOTIFY_REDIRECT_URI = "http://localhost:3000";
+  const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const SPOTIFY_RESPONSE_TYPE = "token";
+  const SPOTIFY_SCOPES = ["playlist-read-private"].join("%20"); // join with space delimiter
 
   const { colorMode, toggleColorMode } = useColorMode();
   const [spotifyToken, setSpotifyToken] = useState("");
@@ -512,7 +490,7 @@ function App() {
             <Center>
               <Button colorScheme="green">
                 <a
-                  href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPES}`}
+                  href={`${SPOTIFY_AUTH_ENDPOINT}?client_id=${SPOTIFY_CLIENT_ID}&redirect_uri=${SPOTIFY_REDIRECT_URI}&response_type=${SPOTIFY_RESPONSE_TYPE}&scope=${SPOTIFY_SCOPES}`}
                 >
                   Spotify Login
                 </a>

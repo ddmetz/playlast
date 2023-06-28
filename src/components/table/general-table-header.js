@@ -1,11 +1,6 @@
 import { Box, Flex, chakra, Text } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-// import type { Table } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
-
-// export interface GeneralTableHeaderProps<T> {
-//   table: Table<T>;
-// }
 
 const GeneralTableHeader = ({ table }) => (
   <Box
@@ -24,8 +19,6 @@ const GeneralTableHeader = ({ table }) => (
           <Box
             key={header.id}
             position="relative"
-            // borderX="1px solid"
-            // borderColor="gray.700"
             marginLeft="-1px"
             width={`${header.getSize()}px`}
             _first={{
@@ -51,7 +44,6 @@ const GeneralTableHeader = ({ table }) => (
                     flex="1 1 auto"
                     overflow="hidden"
                     whiteSpace="nowrap"
-                    // textOverflow="ellipsis"
                     borderRadius="4px"
                     // _hover={{
                     //   bg: header.id !== "select" ? "var(--ck-colors-chakra-subtle-bg)" : "",
@@ -82,6 +74,7 @@ const GeneralTableHeader = ({ table }) => (
                 </Flex>
               </Box>
             </Box>
+            {/* resize columnms */}
             {/* {header.column.id !== "select" ? (
               <Box
                 opacity={header.column.getIsResizing() ? 1 : 0}
