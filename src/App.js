@@ -60,6 +60,8 @@ function App() {
   const [lastfmTopTracks, setLastfmSongs] = useState(null);
   const [spotifyLoading, setSpotifyLoading] = useState(false);
   const [lastfmLoading, setLastfmLoading] = useState(false);
+  const [playlistTracksFiltered, setPlaylistTracksFiltered] = useState([]);
+  const [filterKey, setFilterKey] = useState("");
 
   const toast = useToast();
 
@@ -122,7 +124,7 @@ function App() {
           return;
         }
         setLastfmSongs(tracks);
-        setPlaylistTracks(playlistTracks.concat([]));
+        setPlaylistTracksFiltered(playlistTracksFiltered.concat([]));
         toast({
           title: "Success",
           description: `Loaded Last.fm data for '${lastfmUsername}'`,
@@ -193,7 +195,8 @@ function App() {
               playlist.tracks.href
             );
             setPlaylistTracks(tracks);
-
+            setFilterKey("");
+            setPlaylistTracksFiltered(tracks);
             return true;
           }
           return false;
@@ -247,6 +250,29 @@ function App() {
       console.error("Error getting spotify playlists");
       console.error(error);
       return;
+    }
+  };
+
+  const filterCurrentPlaylist = async (e) => {
+    e.preventDefault();
+    try {
+      if (filterKey) {
+        let filtered = playlistTracks.filter(item =>
+          // find matches on title, artist, or album
+          (item.track.name.toLowerCase().indexOf(filterKey.toLowerCase()) != -1) ||
+          (item.track.artists[0].name.toLowerCase().indexOf(filterKey.toLowerCase()) != -1) ||
+          (item.track.album.name.toLowerCase().indexOf(filterKey.toLowerCase()) != -1)
+        );
+        setPlaylistTracksFiltered(filtered)
+      } else {
+        setPlaylistTracksFiltered(playlistTracks)
+      }
+    } catch (error) {
+      console.error("Error filtering playlist");
+      console.error(error);
+      return;
+    } finally {
+
     }
   };
 
@@ -405,6 +431,33 @@ function App() {
     );
   };
 
+  const renderPlaylistFilter = () => {
+    return (
+      <FormControl>
+        {/* <FormLabel>Filter playlist</FormLabel> */}
+        <Flex>
+          <Input
+            type="text"
+            placeholder="Filter playlist"
+            onChange={(e) => setFilterKey(e.target.value)}
+            mr="0.5rem"
+          />
+          <Box>
+            <Button
+              colorScheme="purple"
+              type="submit"
+              onClick={filterCurrentPlaylist}
+              w="11rem"
+              isLoading={spotifyLoading}
+            >
+              Filter
+            </Button>
+          </Box>
+        </Flex>
+      </FormControl>
+    );
+  };
+
   const renderSpotifyPlaylist = () => {
     return (
       <Center>
@@ -471,9 +524,10 @@ function App() {
             {currentSpotifyPlaylist["name"] ? (
               <>
                 <GridItem>{renderSpotifyPlaylist()}</GridItem>
+                <GridItem>{renderPlaylistFilter()}</GridItem>
 
                 <GridItem h="800px">
-                  <GeneralTable columns={columns} data={playlistTracks} />
+                  <GeneralTable columns={columns} data={playlistTracksFiltered} />
                 </GridItem>
               </>
             ) : (
