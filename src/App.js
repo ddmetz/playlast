@@ -10,6 +10,7 @@ import {
   FormLabel,
   Grid,
   GridItem,
+  HStack,
   Heading,
   Image,
   Input,
@@ -21,26 +22,20 @@ import {
   Stack,
   Text,
   useColorMode,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-import {
-  MoonIcon,
-  SunIcon,
-  TimeIcon
-} from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, TimeIcon } from "@chakra-ui/icons";
 
 import { GeneralTable } from "./components/table/general-table";
 import "./index.css";
 
-
 const placeholderAlbumArt = require("./static/placeholder-album-art.png");
 
 function App() {
-
   const LASTFM_API_KEY = "bf66e9302e019074df8bbcbdecc64104";
 
   const SPOTIFY_CLIENT_ID = "9ce7fc97485342b4ac6e3ae3666653bb";
@@ -257,22 +252,27 @@ function App() {
     e.preventDefault();
     try {
       if (filterKey) {
-        let filtered = playlistTracks.filter(item =>
-          // find matches on title, artist, or album
-          (item.track.name.toLowerCase().indexOf(filterKey.toLowerCase()) != -1) ||
-          (item.track.artists[0].name.toLowerCase().indexOf(filterKey.toLowerCase()) != -1) ||
-          (item.track.album.name.toLowerCase().indexOf(filterKey.toLowerCase()) != -1)
+        let filtered = playlistTracks.filter(
+          (item) =>
+            // find matches on title, artist, or album
+            item.track.name.toLowerCase().indexOf(filterKey.toLowerCase()) !=
+              -1 ||
+            item.track.artists[0].name
+              .toLowerCase()
+              .indexOf(filterKey.toLowerCase()) != -1 ||
+            item.track.album.name
+              .toLowerCase()
+              .indexOf(filterKey.toLowerCase()) != -1
         );
-        setPlaylistTracksFiltered(filtered)
+        setPlaylistTracksFiltered(filtered);
       } else {
-        setPlaylistTracksFiltered(playlistTracks)
+        setPlaylistTracksFiltered(playlistTracks);
       }
     } catch (error) {
       console.error("Error filtering playlist");
       console.error(error);
       return;
     } finally {
-
     }
   };
 
@@ -467,32 +467,34 @@ function App() {
           variant="none"
           w="100%"
         >
-          <Image
-            src={
-              currentSpotifyPlaylist["images"].length
-                ? currentSpotifyPlaylist["images"][0]?.url
-                : ""
-            }
-            alt="Playlist Image"
-            maxW={{ base: "50%", sm: "200px" }}
-            borderRadius="lg"
-          />
-          <CardBody>
-            <Stack spacing="0" gap="1rem">
-              <Heading size="4xl">
-                <a
-                  href={currentSpotifyPlaylist["external_urls"]["spotify"]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {currentSpotifyPlaylist["name"]}
-                </a>
-              </Heading>
-              <Text fontSize="xl">
-                {currentSpotifyPlaylist["tracks"].total} Tracks
-              </Text>
-            </Stack>
-          </CardBody>
+          <HStack>
+            <Image
+              src={
+                currentSpotifyPlaylist["images"].length
+                  ? currentSpotifyPlaylist["images"][0]?.url
+                  : ""
+              }
+              alt="Playlist Image"
+              maxW={{ base: "200px" }}
+              borderRadius="lg"
+            />
+            <CardBody>
+              <Stack spacing="0" gap="1rem">
+                <Heading size="4xl">
+                  <a
+                    href={currentSpotifyPlaylist["external_urls"]["spotify"]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {currentSpotifyPlaylist["name"]}
+                  </a>
+                </Heading>
+                <Text fontSize="xl">
+                  {currentSpotifyPlaylist["tracks"].total} Tracks
+                </Text>
+              </Stack>
+            </CardBody>
+          </HStack>
         </Card>
       </Center>
     );
@@ -527,7 +529,10 @@ function App() {
                 <GridItem>{renderPlaylistFilter()}</GridItem>
 
                 <GridItem h="800px">
-                  <GeneralTable columns={columns} data={playlistTracksFiltered} />
+                  <GeneralTable
+                    columns={columns}
+                    data={playlistTracksFiltered}
+                  />
                 </GridItem>
               </>
             ) : (
